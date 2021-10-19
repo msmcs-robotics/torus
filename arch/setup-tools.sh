@@ -3,7 +3,12 @@
 # Ideal to setup static IP adresses
 
 # assuming using Nvidia GPU, or no GPU at all
-# kub install ref - https://adamtheautomator.com/install-kubernetes-ubuntu/
+
+# kub install ref - https://dnaeon.github.io/install-and-configure-k8s-on-arch-linux/
+		
+		# or
+
+#  https://gist.github.com/StephenSorriaux/fa07afa57c931c84d1886b08c704acfe
 
 
 # if making a worker node, change the following variable to the output of the join command from the master server.
@@ -43,7 +48,10 @@ echo "nameserver 1.0.0.1" >> /etc/resolv.conf
 
 
 sudo pacman -Sy
-sudo pacman -S devtools base-devel python3 python3-pip golang sshd openssh-server ufw docker git htop yay
+sudo pacman -S devtools base-devel python python-pip sshd openssh ufw docker git htop ebtables ethtool wget unzip ethtool ebtables socat conntrack-tools cfssl
+
+sudo systemctl enable sshd
+systemctl enable docker && systemctl restart docker
 
 #yay
 cd /opt
@@ -72,41 +80,60 @@ then
 	# Cuda Toolkit
 	yay install cuda-11.1
 	# PyTorch Cuda with Pip
-	pip3 install torch==1.8.2+cu111 torchvision==0.9.2+cu111 torchaudio==0.8.2 -f https://download.pytorch.org/whl/lts/1.8/torch_lts.html
+	pip install torch==1.8.2+cu111 torchvision==0.9.2+cu111 torchaudio==0.8.2 -f https://download.pytorch.org/whl/lts/1.8/torch_lts.html
 
 else
-	pip3 install torch==1.8.2+cpu torchvision==0.9.2+cpu torchaudio==0.8.2 -f https://download.pytorch.org/whl/lts/1.8/torch_lts.html
+	pip install torch==1.8.2+cpu torchvision==0.9.2+cpu torchaudio==0.8.2 -f https://download.pytorch.org/whl/lts/1.8/torch_lts.html
 fi
 
-pip3 install matplotlib numpy 
+pip install matplotlib numpy 
 
 
 #add user to docker group
 sudo usermod -a -G docker $archuser
+									
+									#Kubernetes
+
+export CNI_VERSION="v0.6.0"
+mkdir -p /opt/cni/bin
+curl -L "https://github.com/containernetworking/plugins/releases/download/${CNI_VERSION}/cni-plugins-amd64-${CNI_VERSION}.tgz" | tar -C /opt/cni/bin -xz
+
+
+export CRICTL_VERSION="v1.11.1"
+mkdir -p /opt/bin
+curl -L "https://github.com/kubernetes-incubator/cri-tools/releases/download/${CRICTL_VERSION}/crictl-${CRICTL_VERSION}-linux-amd64.tar.gz" | tar -C /opt/bin -xz
+
+RELEASE="$(curl -sSL https://dl.k8s.io/release/stable.txt)"
+
+mkdir -p /opt/bin
+cd /opt/bin
+curl -L --remote-name-all https://storage.googleapis.com/kubernetes-release/release/${RELEASE}/bin/linux/amd64/{kubeadm,kubelet,kubectl}
+chmod +x {kubeadm,kubelet,kubectl}
+
+curl -sSL "https://raw.githubusercontent.com/kubernetes/kubernetes/${RELEASE}/build/debs/kubelet.service" | sed "s:/usr/bin:/opt/bin:g" > /etc/systemd/system/kubelet.service
+mkdir -p /etc/systemd/system/kubelet.service.d
+curl -sSL "https://raw.githubusercontent.com/kubernetes/kubernetes/${RELEASE}/build/debs/10-kubeadm.conf" | sed "s:/usr/bin:/opt/bin:g" > /etc/systemd/system/kubelet.service.d/10-kubeadm.conf
+systemctl enable kubelet && systemctl start kubelet
+
+
 
 if [[ ! $MASTERNODE =~ ^[Yy]$ ]]
 then
 	# install kub for a master
-	sudo apt-get install kubeadm kubelet 
-	touch kubinfo.txt
-	touch kubnet.txt
-	kubeadm version && kubelet --version && kubectl version >> kubinfo.txt
-	kubeadm init --pod-network-cidr=$PODNET --apiserver-advertise-address=$APISERVERIP >> kubnet.txt
-	echo -e "\n\n\n\n\n Copy the following command to join the network: \n\n\n\n\n"
-	cat kubnet.txt | grep kubeadm
-	echo -e "Have you copied the command?"
-	echo "If not, look in kubnet.txt"
-	echo -e "Press 'c' to continue...\n\n"
-	while : ; do
-	read -n 1 k <&1
-	if [[ $k = c ]] ; then
-	printf "Ok then, moving on....."
-	break
-	fi
-	done
+	kubeadm init --pod-network-cidr=$PODNET
 	mkdir -p $HOME/.kube
-	sudo cp -i /etc/Kubernetes/admin.conf $HOME/.kube/config
+	sudo cp -i /etc/kubernetes/admin.conf $HOME/.kube/config
 	sudo chown $(id -u):$(id -g) $HOME/.kube/config
+	
+	kubectl apply -f https://raw.githubusercontent.com/coreos/flannel/bc79dd1505b0c8681ece4de4c0d86c5cd2643275/Documentation/kube-flannel.yml
+	kubectl taint nodes --all node-role.kubernetes.io/master-
+	kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/master/deploy/mandatory.yaml
+	kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/master/deploy/provider/baremetal/service-nodeport.yaml
+	
+done
+
+cd "${OLD_PWD}"
+echo "> Done"
 
 else
 	# install kub for a worker
