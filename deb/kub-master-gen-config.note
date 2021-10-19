@@ -1,0 +1,21 @@
+Look into generating kubernetes yaml config files with "podman"
+
+ref - https://oracle-base.com/articles/linux/podman-generate-and-play-kubernetes-yaml-files
+
+#!/bin/bash
+clear
+echo -e "\n\n\n 'kubectl get nodes' \n\n\n"
+kubectl get nodes
+echo -e "\n\n\n 'kubectl apply -f https://raw.githubusercontent.com/coreos/flannel/master/Documentation/kube-flannel.yml' \n\n\n"
+
+echo "In a separate terminal, run the above command to get a popular Pod network config"
+echo -e "Be sure to make changes to the following values: \n Network: 10.244.0.0/16 \n "
+echo "When done, press c to continue..."
+while : ; do
+	read -n 1 k <&1
+	if [[ $k = c ]] ; then
+	printf "Ok then, moving on....."
+	break
+	fi
+done
+kubectl get nodes
