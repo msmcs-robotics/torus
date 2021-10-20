@@ -2,7 +2,7 @@
 
 > An automated, scalable NN training system.
  - NN Models based on Pytorch
- - NN Deployment based on Docker, Kuberneted, Kubeflow
+ - NN Deployment based on Docker, Kubernetes, Kubeflow
  - Node Control Automation enhanced by Ansible
 ----------------------------------------------------
 
