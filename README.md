@@ -1,9 +1,11 @@
 # Torus
 
 > An automated, scalable NN training system.
-> NN Models on Pytorch
-> Deployment based on Docker, Kuberneted, Kubeflow
-> Node Automation enhanced by Ansible
+ - NN Models based on Pytorch
+ - NN Deployment based on Docker, Kuberneted, Kubeflow
+ - Node Control Automation enhanced by Ansible
+----------------------------------------------------
+
 
 Scripts and configs for the MSMCS Kubernetes Cluster
 
