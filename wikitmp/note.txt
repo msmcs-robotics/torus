@@ -1,0 +1,2 @@
+Need to change visibility of repository in order to add wiki pages.
+Would rather keep torus private until able to setup another private repo to hold sensetive config data.
