@@ -1,0 +1,14 @@
+[torus]
+
+server1 ansible_host=ipa
+server2 ansible_host=ipb
+server3 ansible_host=ipc
+server4 ansible_host=ipd
+
+
+[torus:vars]
+
+ansible_python_interpreter=/usr/bin/python3
+ansible_user=clusteruser
+ansible_password=clusterpass
+
