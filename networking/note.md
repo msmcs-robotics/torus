@@ -1,23 +1,23 @@
 
 
-**Setup static ip for ethernet interface**
+## Setup static ip for ethernet interface
 
-Debian
+**Debian**
 
 ```
 sudo ip addr add [ip]/[mask] [bridgename] [interface]
 sudo ip addr del [ip]/[mask] [bridgename] [interface]
 ```
 
-For example: 
+Example: 
 ```
 sudo ip addr add 192.168.10.1/24 dev eth0
 sudo ip addr del 192.168.10.1/24 dev eth0
 ```
 
-Arch
-
+**Arch**
 
 ```
-ip address del 192.168.0.55/24 dev enp0s2
+ip address del [ip]/[mask] [bridgename] [interface]
+ip address del [ip]/[mask] [bridgename] [interface]
 ```
