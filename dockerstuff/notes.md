@@ -32,7 +32,7 @@ docker run --name ubuntudev -it -v /mounteddrive/dbs:/opt/dbs -t ubuntu:20.04 /b
 
 **Used for interacting with folders containing docker volume (available on SMB shares) over the network**
 
-*This should make data persistent, so if a container crashes, the mounted volume will still have data, and one could just prune and re-deploy a container*
+*This should make data persistent, so if a container crashes, data would still exist on the mounted volume, and one could just prune and re-deploy a container*
 
 *copy archive from NAS*
 ```
