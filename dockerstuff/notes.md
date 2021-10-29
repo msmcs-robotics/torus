@@ -28,17 +28,17 @@ docker volume create myvolume
 ```
 
 *use the volume*
-'''
+```
 docker run --mount source=volume-name,destination=path-inside-container docker-images
-'''
+```
 
 **Default Values**
  - puts volume dir in /var/lib/docker/volumes/lolvol
  - (in container) mounts volume in /data
-'''
+```
 docker volume create lolvol
 docker run --name ubuntutut -it --mount source=lols,destination=/data -t ubuntu:20.04 /bin/bash
-'''
+```
 
 **Custom Values**
  - put volume dir in specified dir on external drive
