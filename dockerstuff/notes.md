@@ -20,7 +20,7 @@ docker stop ubuntudev && docker container prune
 
 ## Volumes
 
-**Used for storing NN data & model archives**
+**Used for storing NN data & models**
 
 *On an external, mounted drive, make a folder named dbs, 
 and mount dbs in a new folder called datahere, in the opt dir, of in the container*
@@ -35,14 +35,14 @@ docker run --name ubuntudev -it -v /mounteddrive/dbs:/opt/dbs -t ubuntu:20.04 /b
 
 ## Network Files
 
-**Used for interacting with folders use for docker volume (available on SMB shares) over the network**
+**Used for interacting with folders containing docker volume (available on SMB shares) over the network**
 
-*copy data from NAS*
+*copy archive from NAS*
 ```
 smbclient \\\\$smbaddr\\$smbshare -U '${smbuser}' $smbpass --directory $dir_on_share -c "get ${model_name}-$version.7z"
 ```
 
-*copy data to NAS*
+*make an archive with update model, and copy back to NAS*
 ```
 7z a ${model_name}-$new_version.7z $path_to_docker_volume
 smbclient \\\\$smbaddr\\$smbshare -U '${smbuser}' $smbpass --directory $dir_on_share -c "put ${model_name}-$new_version.7z"
