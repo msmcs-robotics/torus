@@ -20,9 +20,10 @@ docker stop tut && docker container prune
 
 ## Volumes
 
-**Use s Folder as a mount point**
+**Use a specified Folder as a mount point...**
+
 *On an external, mounted drive, make a folder named dbs, 
-and mount the folder in a new folder called datahere, in the opt dir, of in the container*
+and mount dbs in a new folder called datahere, in the opt dir, of in the container*
 ```
 docker run --name ubuntutut -it -v /mounteddrive/dbs:/opt/dbs -t ubuntu:20.04 /bin/bash
 ```
