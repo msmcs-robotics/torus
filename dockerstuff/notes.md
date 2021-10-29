@@ -28,14 +28,10 @@ and mount dbs in a new folder called datahere, in the opt dir, of in the contain
 docker run --name ubuntudev -it -v /mounteddrive/dbs:/opt/dbs -t ubuntu:20.04 /bin/bash
 ```
 
-## SSH
-```
-```
-
-
 ## Network Files
 
 **Used for interacting with folders containing docker volume (available on SMB shares) over the network**
+*This should make data persistent, so if a container crashes, the mounted volume will still have data, and one could just prune and re-deploy a container*
 
 *copy archive from NAS*
 ```
@@ -47,3 +43,4 @@ smbclient \\\\$smbaddr\\$smbshare -U '${smbuser}' $smbpass --directory $dir_on_s
 7z a ${model_name}-$new_version.7z $path_to_docker_volume
 smbclient \\\\$smbaddr\\$smbshare -U '${smbuser}' $smbpass --directory $dir_on_share -c "put ${model_name}-$new_version.7z"
 ```
+
