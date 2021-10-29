@@ -45,3 +45,6 @@ docker run --name ubuntutut -it --mount source=lols,destination=/data -t ubuntu:
  - (in container) mount volume in /dbs/data
  - 
 
+## SSH
+
+## Network Files
