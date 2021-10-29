@@ -29,8 +29,13 @@ docker run --name ubuntudev -it -v /mounteddrive/dbs:/opt/dbs -t ubuntu:20.04 /b
 ```
 
 ## SSH
+```
+```
+
 
 ## Network Files
 
+```
 7z a ${archive_name}-$time.7z $DOCKER_VOLUME_DIR
 smbclient \\\\$smbaddr\\$smbshare -U '${smbuser}' $smbpass --directory $dir_on_share -c "put ${archive_name}-$time.7z"
+```
