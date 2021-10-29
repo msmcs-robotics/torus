@@ -12,7 +12,7 @@ to exit any container without stopping it:
 ```
 Ctrl+p, then Ctrl+q
 ```
-stop and (optional) delete container:
+stop and remove container:
 ```
 docker stop ubuntudev && docker container prune
 ```
