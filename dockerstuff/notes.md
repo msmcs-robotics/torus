@@ -20,30 +20,12 @@ docker stop tut && docker container prune
 
 ## Volumes
 
-**Ex**
-
-*Create a Volume*
+**Use s Folder as a mount point**
+*On an external, mounted drive, make a folder named dbs, 
+and mount the folder in a new folder called datahere, in the opt dir, of in the container*
 ```
-docker volume create myvolume
+docker run --name ubuntutut -it -v /mounteddrive/dbs:/opt/dbs -t ubuntu:20.04 /bin/bash
 ```
-
-*use the volume*
-```
-docker run --mount source=volume-name,destination=path-inside-container docker-images
-```
-
-**Default Values**
- - puts volume dir in /var/lib/docker/volumes/lolvol
- - (in container) mounts volume in /data
-```
-docker volume create lolvol
-docker run --name ubuntutut -it --mount source=lols,destination=/data -t ubuntu:20.04 /bin/bash
-```
-
-**Custom Values**
- - put volume dir in specified dir on external drive
- - (in container) mount volume in /dbs/data
- - 
 
 ## SSH
 
