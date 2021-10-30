@@ -45,6 +45,16 @@ smbclient \\\\$smbaddr\\$smbshare -U '${smbuser}' $smbpass --directory $dir_on_s
 smbclient \\\\$smbaddr\\$smbshare -U '${smbuser}' $smbpass --directory $dir_on_share -c "put ${model_name}-$new_version.7z"
 ```
 
-## GUI Apps (Stats & Health Checks for reports)
+## GUI App Support (Stats & Health Checks for reports)
+
+**Example Image**
+*on host*
 ```
+docker pull consol/ubuntu-xfce-vnc
+docker run -d -it --name ubuntu-xfce-tut -p 5901:5901 -p 6901:6901 consol/ubuntu-xfce-vnc bash
+docker container inspect -f '{{ .NetworkSettings.IPAddress }}' ubuntu-xfce-tut
+```
+*in browser visit...*
+```
+http://dockerip:6901/vnc_auto.html?password=vncpassword
 ```
