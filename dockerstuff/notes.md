@@ -45,3 +45,6 @@ smbclient \\\\$smbaddr\\$smbshare -U '${smbuser}' $smbpass --directory $dir_on_s
 smbclient \\\\$smbaddr\\$smbshare -U '${smbuser}' $smbpass --directory $dir_on_share -c "put ${model_name}-$new_version.7z"
 ```
 
+## GUI Apps (Stats & Health Checks for reports)
+```
+```
