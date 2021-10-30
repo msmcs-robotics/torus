@@ -56,5 +56,5 @@ docker container inspect -f '{{ .NetworkSettings.IPAddress }}' ubuntu-xfce-tut
 ```
 *in browser visit...*
 ```
-http://containerip:6901/vnc_auto.html?password=vncpassword
+http://containerip:6901/?password=vncpassword
 ```
