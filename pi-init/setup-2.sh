@@ -4,6 +4,14 @@ clear
 nodetype=$1
 rebnow=$2
 
+menu=$(cat <<EOF
+usage:
+    setup-2.sh [nodetype] [reboot now] [smbuser] [smbpass] [smbsharename] [smbsharedir] 
+First Argument (node type) should be a 'm' or a 'w'
+Second Argument (reboot now) should be a 'y' or a 'n'
+EOF
+)
+
 if [[ "$nodetype" = "m" ]];
 then
     echo "ok..."
@@ -11,7 +19,8 @@ elif [[ "$nodetype" = "w" ]];
 then
     echo "ok..."
 else
-    echo -e "\n\n\n First Argument (node type) should be a 'm' or a 'w' !!!!"
+    clear
+    echo -e "$menu"
     exit
 fi
 
@@ -22,7 +31,8 @@ elif [[ "$rebnow" = "n" ]];
 then
     echo "ok..."
 else
-    echo -e "\n\n\n Second Argument (reboot now) should be a 'y' or a 'n' !!!!"
+    clear
+    echo -e "$menu"
     exit
 fi
 
@@ -71,8 +81,6 @@ else
     echo -e "\n\n\n First Argument should be a 'm' or a 'w' !!!!"
     exit
 fi
-
-read -p "Setup done, would you like to reboot now? (y/n)> " rebnow
 
 if [[ "$rebnow" = "n" ]];
 then
