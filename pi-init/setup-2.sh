@@ -1,21 +1,36 @@
 #!/bin/bash
 logfile=/home/$USER/init.log
 clear
+nodetype=$1
+rebnow=$2
+
+if [[ "$nodetype" = "m" ]];
+then
+    echo "ok..."
+elif [[ "$nodetype" = "w" ]];
+then
+    echo "ok..."
+else
+    echo -e "\n\n\n First Argument (node type) should be a 'm' or a 'w' !!!!"
+    exit
+fi
+
+if [[ "$rebnow" = "y" ]];
+then
+    echo "ok..."
+elif [[ "$rebnow" = "n" ]];
+then
+    echo "ok..."
+else
+    echo -e "\n\n\n Second Argument (reboot now) should be a 'y' or a 'n' !!!!"
+    exit
+fi
+
 
 echo "Logging to: $logfile"
 echo -e "\n\n"
 ip a s | grep eth0
 echo -e "\n\n"
-read -p "Master or Worker node? (m/w)> " nodetype
-
-if [ $nodetype = "m" ]
-then
-    read -p "What is the new name of the master node?> " masname
-    echo $masname > /etc/hostname
-else
-    read -p "What will this node's worker ID be? (Ex: a number or string of letters with no spaces)> " nodename
-    echo $nodename > /etc/hostname
-fi
 
 # Networking
 ip a s | grep eth0 >> $logfile
@@ -42,7 +57,7 @@ then
     bash master/mas-kf.sh
     echo "Setting up smb..."
     bash master/mas-smb.sh
-else if [[ "$nodetype" = "w" ]];
+elif [[ "$nodetype" = "w" ]];
 then
     echo "Setting up ansible..."
     bash worker/work-ab.sh
@@ -53,10 +68,12 @@ then
     echo "Setting up smb..."
     bash worker/work-smb.sh
 else
+    echo -e "\n\n\n First Argument should be a 'm' or a 'w' !!!!"
     exit
 fi
 
 read -p "Setup done, would you like to reboot now? (y/n)> " rebnow
+
 if [[ "$rebnow" = "n" ]];
 then
     exit

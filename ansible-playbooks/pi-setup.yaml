@@ -1,0 +1,11 @@
+name: Setup Rpis
+
+      # Change to the directory that 
+       command: /opt/torus/pi-init/setup-2.sh
+
+       register: comm_out
+
+       debug: msg="{{ comm_out.stdout }}"
+
+       debug: msg="{{ comm_out.stderr }}"
+       
