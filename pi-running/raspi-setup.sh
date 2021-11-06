@@ -1,6 +1,10 @@
 #!/bin/bash
 
+
+read -p "What is the new name of the master node?> " masname
+
 read -p "What will this node's worker ID be? (Ex: a number or string of letters with no spaces)> " nodename
+
 
 # Networking
 echo $nodename > /etc/hostname
