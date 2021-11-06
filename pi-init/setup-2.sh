@@ -77,8 +77,8 @@ chmod -R 777 .
 ####################     Pass NodeType Args to More Scripts     ####################
 if [[ "$nodetype" = "m" ]];
 then
-    echo "Setting up ansible..."
-    bash mas-ab.sh
+    #echo "Setting up matrix notifications..."
+    #bash notifications.sh
     echo "Setting up kubernetes..."
     bash kub-init.sh m
     echo "Setting up kubeflow..."
