@@ -56,5 +56,10 @@ else
     exit
 fi
 
-read -p "Setup done, would you like to reboot now? (Y/n)> 
-sudo reboot now
+read -p "Setup done, would you like to reboot now? (y/n)> " rebnow
+if [[ "$rebnow" = "n" ]];
+then
+    exit
+else
+    sudo reboot now
+fi
