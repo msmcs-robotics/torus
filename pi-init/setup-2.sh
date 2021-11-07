@@ -65,7 +65,7 @@ sudo apt install nmap git docker iperf3 speedtest-cli python3 python3-pip >> $lo
 echo -e "\n\n------------------------------\n\n" >> $logfile
 chmod -R 777 .
 
-####################     Firewall Setup (For Future Use)     ####################
+####################     Firewall Setup     ####################
 #echo "Setting up firewall..."
 #sudo apt install ufw >> $logfile
 #kubernetes-ports-and-port-ranges=
