@@ -19,10 +19,10 @@ echo -e "\n\n"
 ip a s | grep eth0
 echo -e "\n\n"
 
-if [[ "$nodetype" = "m" ]];
+if [ "$nodetype" = "m" ]
 then
     echo "ok..."
-elif [[ "$nodetype" = "w" ]];
+elif [ "$nodetype" = "w" ]
 then
     echo "ok..."
 else
@@ -34,10 +34,10 @@ fi
 echo "Changing hostname and restarting..."
 
 
-if [ "$1" = "w" ];
+if [ "$1" = "w" ]
 then
     echo "worker${nodeid}" > /etc/hostname
-elif [ "$1" = "m" ];
+elif [ "$1" = "m" ]
     echo "master" > /etc/hostname
 fi
 

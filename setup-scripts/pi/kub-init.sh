@@ -4,7 +4,7 @@ master_ip=$2
 master_token=$3
 save_token="/opt/k3s-server-token.txt"
 
-if [[ "$nodetype" = "m" ]];
+if [ "$nodetype" = "m" ]
 then
     echo "ok..."
     curl -sfL https://get.k3s.io | sh -s - --write-kubeconfig-mode 644
@@ -23,7 +23,7 @@ then
     #helm repo add stable https://kubernetes-charts.storage.googleapis.com/
     #helm repo add bitnami https://charts.bitnami.com/bitnami
 
-elif [[ "$nodetype" = "w" ]];
+elif [ "$nodetype" = "w" ]
 then
     # Get Kubernetes Master Node Info
     k3s_server="https://${master_ip}:6443"

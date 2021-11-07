@@ -35,10 +35,10 @@ Usage:
 EOF
 )
 
-if [[ "$nodetype" = "m" ]];
+if [ "$nodetype" = "m" ]
 then
     echo "ok..."
-elif [[ "$nodetype" = "w" ]];
+elif [ "$nodetype" = "w" ]
 then
     # Get Kubernetes Master Node Info
     read -p "What is the IP address of the master node?> " masip
@@ -50,10 +50,10 @@ else
     exit
 fi
 
-if [[ "$rebnow" = "y" ]];
+if [ "$rebnow" = "y" ]
 then
     echo "ok..."
-elif [[ "$rebnow" = "n" ]];
+elif [ "$rebnow" = "n" ]
 then
     echo "ok..."
 else
@@ -92,7 +92,7 @@ chmod -R 777 .
 #sudo ufw allow ${kubernetes-ports-and-port-ranges}/udp
 
 ####################     Pass NodeType Args to More Scripts     ####################
-if [[ "$nodetype" = "m" ]];
+if [ "$nodetype" = "m" ]
 then
     #echo "Setting up matrix notifications..."
     #bash notifications.sh
@@ -101,7 +101,7 @@ then
     echo -e "\n\n\nSetting up kubeflow...\n\n\n"
     bash kuf-init.sh
 
-elif [[ "$nodetype" = "w" ]];
+elif [ "$nodetype" = "w" ]
 then
 
     echo -e "\n\n\nSetting up kubernetes...\n\n\n"
@@ -111,7 +111,7 @@ fi
 echo -e "\n\n\nSetting up smb...\n\n\n"
 bash smb-init.sh $smbuser $smbsharename $smbsharedir
 
-if [[ "$rebnow" = "n" ]];
+if [ "$rebnow" = "n" ]
 then
     exit
 else
