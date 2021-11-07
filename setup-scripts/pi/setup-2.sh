@@ -1,5 +1,6 @@
 #!/bin/bash
 logfile=/home/$USER/init.log
+touch $logfile
 clear
 ####################     INFORMATION     ####################
 nodetype=$1
@@ -80,7 +81,7 @@ ip a s | grep eth0
 echo -e "\n\n"
 
 ####################     NETWORKING     ####################
-ip a s | grep eth0 >> $logfile
+ip a s | grep eth0 > $logfile
 echo -e "\n\n------------------------------\n\n" >> $logfile
 echo "nameserver 1.1.1.1" > /etvc/resolv.conf
 echo "nameserver 1.0.0.1" >> /etc/resolv.conf
