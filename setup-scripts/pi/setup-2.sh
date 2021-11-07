@@ -1,5 +1,5 @@
 #!/bin/bash
-logfile=/home/$USER/init.log
+logfile=${HOME}/init.log
 touch $logfile
 clear
 ####################     INFORMATION     ####################
