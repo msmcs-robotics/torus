@@ -27,7 +27,7 @@
   
       4.3. Rebooting will take plave and you can CSSH into the nodes to delete the torus repo
   
-  *You should not need it in the future thanks to ansible*
+      *You should not need it in the future due to ansible*
   
 **Support for the following OS distributions in progres:**
 - Raspbian
