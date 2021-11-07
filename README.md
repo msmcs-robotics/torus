@@ -8,6 +8,11 @@
 ----------------------------------------------------
 > - Raspberry Pis (ARM64) using specific variants of [Kubernetes](https://microk8s.io/), [Kubeflow](https://www.kubeflow.org/docs/distributions/microk8s/kubeflow-on-microk8s/)
 
+**Support for the following OS distributions in progres:**
+- Raspbian
+- Ubuntu
+- Arch
+
 
 ### Starting Point
 
@@ -29,7 +34,3 @@
   
       *You should not need it in the future due to ansible*
   
-**Support for the following OS distributions in progres:**
-- Raspbian
-- Ubuntu
-- Arch
