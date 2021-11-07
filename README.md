@@ -15,17 +15,17 @@
 
 2. Run the generated cssh command
   
-  2.1. This will help to accept all node ssh keys
+      2.1. This will help to accept all node ssh keys
 
 3. With cssh, clone the torus repo
   
 4. Run the setup-1 script corresponding to each node's OS and architecture, and pass desired arguments.
   
-  4.1. This will setup each node's hostname, allowing better network organization
+      4.1. This will setup each node's hostname, allowing better network organization
   
-  4.2. This will also install required packages for torus.
+      4.2. This will also install required packages for torus.
   
-  4.3. Rebooting will take plave and you can CSSH into the nodes to delete the torus repo
+      4.3. Rebooting will take plave and you can CSSH into the nodes to delete the torus repo
   
   *You should not need it in the future thanks to ansible*
   
