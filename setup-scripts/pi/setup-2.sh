@@ -40,12 +40,12 @@ err2="reboot option incorrect"
 err3="smb variable empty"
 
 if [ $nodetype = "m" ]; then
-    echo "ok..."
+    echo "master..."
 elif [ $nodetype = "w" ]; then
     # Get Kubernetes Master Node Info
+    echo "worker..."
     read -p "What is the IP address of the master node?> " masip
     read -p "What is the api token provided by the master node?> " mastoken
-    echo "ok..."
 else
     clear
     echo -e "\n\n\n!!! ${err1} !!!\n\n\n"
@@ -64,13 +64,13 @@ else
     exit
 fi
 
-if [ $smbuser != "" && $smbpass != "" && $smbsharename != "" && $smbsharedir != "" ]; then
-    echo "smb ok..."
-else
+if [ -z $smbuser ] || [ -z $smbpass ] || [ -z $smbsharename ] || [ -z $smbsharedir ]; then
     clear
     echo -e "\n\n\n!!! ${err3} !!!\n\n\n"
     echo -e "$menu"
     exit
+else
+    echo "smb ok..."
 fi
 
 
