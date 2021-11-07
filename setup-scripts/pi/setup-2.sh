@@ -76,9 +76,6 @@ fi
 
 
 echo "Logging output to: $logfile"
-echo -e "\n\n"
-ip a s | grep eth0
-echo -e "\n\n"
 
 ####################     NETWORKING     ####################
 ip a s | grep eth0 2>&1 | tee $logfile
