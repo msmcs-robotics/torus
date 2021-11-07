@@ -6,8 +6,9 @@ nodetype=$1
 rebnow=$2
 
 smbuser=$3
-smbsharename=$4
-smbsharedir=$5
+smbpass=$4
+smbsharename=$5
+smbsharedir=$6
 ####################     ERROR CORRECTION     ####################
 menu=$(cat <<EOF
 Usage:
@@ -36,7 +37,7 @@ EOF
 )
 err1="node type incorrect"
 err2="reboot option incorrect"
-err3=""
+err3="smb variable empty"
 
 if [ $nodetype = "m" ]; then
     echo "ok..."
@@ -47,22 +48,30 @@ elif [ $nodetype = "w" ]; then
     echo "ok..."
 else
     clear
+    echo -e "\n\n\n!!! ${err1} !!!\n\n\n"
     echo -e "$menu"
     exit
 fi
 
 if [ $rebnow = "y" ]; then
-    echo "ok..."
+    echo "will reboot..."
 elif [ $rebnow = "n" ]; then
-    echo "ok..."
+    echo "not rebooting..."
 else
     clear
-    echo ""
+    echo -e "\n\n\n!!! ${err2} !!!\n\n\n"
     echo -e "$menu"
     exit
 fi
 
-if
+if [ $smbuser != "" && $smbpass != "" && $smbsharename != "" && $smbsharedir != "" ]; then
+    echo "smb ok..."
+else
+    clear
+    echo -e "\n\n\n!!! ${err3} !!!\n\n\n"
+    echo -e "$menu"
+    exit
+fi
 
 
 echo "Logging output to: $logfile"
