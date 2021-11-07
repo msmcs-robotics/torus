@@ -81,22 +81,23 @@ ip a s | grep eth0
 echo -e "\n\n"
 
 ####################     NETWORKING     ####################
-ip a s | grep eth0 > $logfile
-echo -e "\n\n------------------------------\n\n" >> $logfile
+ip a s | grep eth0 2>&1 | tee $logfile
+echo -e "\n\n------------------------------\n\n" 2>&1 | tee $logfile
 echo "nameserver 1.1.1.1" > /etc/resolv.conf
 echo "nameserver 1.0.0.1" >> /etc/resolv.conf
 
 echo "Getting things up to date (update & upgrade)..."
-sudo apt update && sudo apt upgrade >> $logfile
-echo -e "\n\n------------------------------\n\n" >> $logfile
+sudo apt update 2>&1 | tee $logfile
+sudo apt upgrade 2>&1 | tee $logfile
+echo -e "\n\n------------------------------\n\n" 2>&1 | tee $logfile
 echo "Installing packages..."
-sudo apt install nmap git docker iperf3 speedtest-cli python3 python3-pip >> $logfile
-echo -e "\n\n------------------------------\n\n" >> $logfile
+sudo apt install nmap git docker iperf3 speedtest-cli python3 python3-pip 2>&1 | tee $logfile
+echo -e "\n\n------------------------------\n\n" 2>&1 | tee $logfile
 chmod -R 777 .
 
 ####################     FIREWALL SETUP     ####################
 #echo "Setting up firewall..."
-#sudo apt install ufw >> $logfile
+#sudo apt install ufw 2>&1 | tee $logfile
 #kubernetes-ports-and-port-ranges=
 #sudo ufw allow 21,22,222,80,139,443,445,9418/tcp
 #sudo ufw allow 21,22,222,80,139,443,445,9418/udp
