@@ -1,4 +1,6 @@
 #!/bin/bash
+mkdir ${HOME}/torus-setup-logs
+logfile=${HOME}/torus-setup-logs/newhost.log
 nodetype=$1
 nodeid=$2
 menu=$(cat <<EOF

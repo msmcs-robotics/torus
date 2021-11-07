@@ -1,2 +1,3 @@
 #!/bin/bash
-logfile=${HOME}/kubeflow.log
+mkdir ${HOME}/torus-setup-logs
+logfile=${HOME}/torus-setup-logs/kubeflow.log

@@ -1,5 +1,6 @@
 #!/bin/bash
-logfile=${HOME}/init.log
+mkdir ${HOME}/torus-setup-logs
+logfile=${HOME}/torus-setup-logs/main.log
 touch $logfile
 clear
 ####################     INFORMATION     ####################
