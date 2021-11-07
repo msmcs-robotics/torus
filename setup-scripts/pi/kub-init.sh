@@ -2,7 +2,7 @@
 nodetype=$1
 master_ip=$2
 master_token=$3
-save_token="/opt/k3s-server-token.txt"
+save_token="/home/$USER/k3s-server-token.txt"
 
 if [ $nodetype = "m" ]; then
     echo "ok..."
