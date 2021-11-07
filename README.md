@@ -17,6 +17,11 @@
 ### Starting Point
 
 1. On a machine used for administeringthe cluster, run the cssh script.
+      1.1. **Pro Tip:** If you have many nodes with static ip addresses neatly placed in an ip range, you might want to try running the following command:
+                    
+        for i in {1..100}; do echo "10.10.10.$i" >> ips.txt; i=$((i+1)); done
+      
+      1.2. You will be able to just copy the contenxt of ips.txt and past into the cssh script, but be sure to replace the numbers in the range and subnet to match your network.
 
 2. Run the generated cssh command
   
