@@ -1,4 +1,18 @@
 #!/bin/bash
+nodetype=$1
+nodeid=$2
+menu=$(cat <<EOF
+Usage:
+    setup-2.sh [nodetype] [nodeid]
+
+ GENERAL
+
+    node type       'm' - master
+                    'w' - worker
+
+    node id         'id' - only needed for a worker node
+EOF
+)
 
 echo -e "\n\n"
 ip a s | grep eth0
@@ -11,7 +25,8 @@ elif [[ "$nodetype" = "w" ]];
 then
     echo "ok..."
 else
-    echo -e "\n\n\n First Argument (node type) should be a 'm' or a 'w' !!!!"
+    clear
+    echo -e "$menu"
     exit
 fi
 
@@ -20,9 +35,8 @@ echo "Changing hostname and restarting..."
 
 if [[ "$1" = "w" ]];
 then
-    read -p "What is this machine's id? " nodeid
     echo "worker${nodeid}" > /etc/hostname
-elif [[ "$1" = "w" ]];
+elif [[ "$1" = "m" ]];
     echo "master" > /etc/hostname
 fi
 
