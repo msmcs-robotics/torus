@@ -34,10 +34,10 @@ fi
 echo "Changing hostname and restarting..."
 
 
-if [[ "$1" = "w" ]];
+if [ "$1" = "w" ];
 then
     echo "worker${nodeid}" > /etc/hostname
-elif [[ "$1" = "m" ]];
+elif [ "$1" = "m" ];
     echo "master" > /etc/hostname
 fi
 
