@@ -3,14 +3,15 @@ nodetype=$1
 nodeid=$2
 menu=$(cat <<EOF
 Usage:
-    setup-2.sh [nodetype] [nodeid]
+    sudo setup-1.sh [nodetype] [nodeid]
 
  GENERAL
 
     node type       'm' - master
                     'w' - worker
 
-    node id         'id' - only needed for a worker node
+    node id         'id' - only needed for a worker node, and
+                           optional, but extremely helpful
 EOF
 )
 
