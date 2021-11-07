@@ -87,11 +87,11 @@ echo "nameserver 1.1.1.1" > /etc/resolv.conf
 echo "nameserver 1.0.0.1" >> /etc/resolv.conf
 
 echo "Getting things up to date (update & upgrade)..."
-sudo apt update 2>&1 | tee $logfile
-sudo apt upgrade 2>&1 | tee $logfile
+sudo apt update -y 2>&1 | tee $logfile
+sudo apt upgrade -y  2>&1 | tee $logfile
 echo -e "\n\n------------------------------\n\n" 2>&1 | tee $logfile
 echo "Installing packages..."
-sudo apt install nmap git docker iperf3 speedtest-cli python3 python3-pip 2>&1 | tee $logfile
+sudo apt install -fy nmap git docker iperf3 speedtest-cli python3 python3-pip 2>&1 | tee $logfile
 echo -e "\n\n------------------------------\n\n" 2>&1 | tee $logfile
 chmod -R 777 .
 
