@@ -1,14 +1,14 @@
 #!/bin/bash
 logfile=/home/$USER/init.log
 clear
-####################     Variables & Some Error Correction    ####################
+####################     INFORMATION     ####################
 nodetype=$1
 rebnow=$2
 
 smbuser=$3
 smbsharename=$4
 smbsharedir=$5
-
+####################     ERROR CORRECTION     ####################
 menu=$(cat <<EOF
 Usage:
     setup-2.sh [nodetype] [reboot now] [smbuser] [smbpass] [smbsharename] [smbsharedir] 
@@ -34,6 +34,9 @@ Usage:
 
 EOF
 )
+err1="node type incorrect"
+err2="reboot option incorrect"
+err3=""
 
 if [ $nodetype = "m" ]; then
     echo "ok..."
@@ -54,9 +57,12 @@ elif [ $rebnow = "n" ]; then
     echo "ok..."
 else
     clear
+    echo ""
     echo -e "$menu"
     exit
 fi
+
+if
 
 
 echo "Logging output to: $logfile"
@@ -64,7 +70,7 @@ echo -e "\n\n"
 ip a s | grep eth0
 echo -e "\n\n"
 
-####################     Networking     ####################
+####################     NETWORKING     ####################
 ip a s | grep eth0 >> $logfile
 echo -e "\n\n------------------------------\n\n" >> $logfile
 echo "nameserver 1.1.1.1" > /etvc/resolv.conf
@@ -78,7 +84,7 @@ sudo apt install nmap git docker iperf3 speedtest-cli python3 python3-pip >> $lo
 echo -e "\n\n------------------------------\n\n" >> $logfile
 chmod -R 777 .
 
-####################     Firewall Setup     ####################
+####################     FIREWALL SETUP     ####################
 #echo "Setting up firewall..."
 #sudo apt install ufw >> $logfile
 #kubernetes-ports-and-port-ranges=
@@ -87,7 +93,7 @@ chmod -R 777 .
 #sudo ufw allow ${kubernetes-ports-and-port-ranges}/tcp
 #sudo ufw allow ${kubernetes-ports-and-port-ranges}/udp
 
-####################     Pass NodeType Args to More Scripts     ####################
+####################     PASS TO OTHER SCRIPTS     ####################
 if [ $nodetype = "m" ]; then
     #echo "Setting up matrix notifications..."
     #bash notifications.sh
