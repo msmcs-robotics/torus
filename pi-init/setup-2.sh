@@ -79,19 +79,19 @@ if [[ "$nodetype" = "m" ]];
 then
     #echo "Setting up matrix notifications..."
     #bash notifications.sh
-    echo "Setting up kubernetes..."
+    echo -e "\n\n\nSetting up kubernetes...\n\n\n"
     bash kub-init.sh m
-    echo "Setting up kubeflow..."
+    echo -e "\n\n\nSetting up kubeflow...\n\n\n"
     bash kuf-init.sh
 
 elif [[ "$nodetype" = "w" ]];
 then
 
-    echo "Setting up kubernetes..."
-    bash kubernetes.sh w $masip $mastoken
+    echo -e "\n\n\nSetting up kubernetes...\n\n\n"
+    bash kub-init.sh w $masip $mastoken
 fi
 
-echo "Setting up smb..."
+echo -e "\n\n\nSetting up smb...\n\n\n"
 bash smb-init.sh $smbuser $smbsharename $smbsharedir
 
 if [[ "$rebnow" = "n" ]];
