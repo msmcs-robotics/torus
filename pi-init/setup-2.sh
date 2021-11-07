@@ -10,11 +10,28 @@ smbsharename=$4
 smbsharedir=$5
 
 menu=$(cat <<EOF
-usage:
+Usage:
     setup-2.sh [nodetype] [reboot now] [smbuser] [smbpass] [smbsharename] [smbsharedir] 
 
- node type      should be a 'm' or a 'w'
- reboot now     should be a 'y' or a 'n'
+ GENERAL
+
+    node type       'm' - master
+                    'w' - worker
+
+    reboot now      'y' - reboot imediately after scripts finish
+                    'n' - do not reboot
+ 
+ SMB
+
+    smbuser         'name' - A new user for managing smb connections in the cluster.
+
+    smbpass         'passwd' - The password for the smb user
+    
+    smbsharename    'name' - The name of the share that the node will use to transfer 
+                    data within the cluster
+
+    smbsharedir     'fullpath' - The directory that the share will use to store data
+
 EOF
 )
 
