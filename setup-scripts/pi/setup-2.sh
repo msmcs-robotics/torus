@@ -83,7 +83,7 @@ echo -e "\n\n"
 ####################     NETWORKING     ####################
 ip a s | grep eth0 > $logfile
 echo -e "\n\n------------------------------\n\n" >> $logfile
-echo "nameserver 1.1.1.1" > /etvc/resolv.conf
+echo "nameserver 1.1.1.1" > /etc/resolv.conf
 echo "nameserver 1.0.0.1" >> /etc/resolv.conf
 
 echo "Getting things up to date (update & upgrade)..."
