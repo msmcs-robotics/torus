@@ -22,7 +22,7 @@
                     
         for i in {1..100}; do echo "10.10.10.$i" >> ips.txt; i=$((i+1)); done
       
-      1.2. You will be able to just copy the contents of *ips.txt* and past into the cssh script, but be sure to replace the numbers in the range and subnet to match your network.
+      1.2. You will be able to just copy the contents of *ips.txt* and paste into the cssh script (and press enter), but be sure to replace the numbers in the range and subnet to match your network.
 
 2. Run the generated cssh command
   
