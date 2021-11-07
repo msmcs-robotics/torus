@@ -35,11 +35,9 @@ Usage:
 EOF
 )
 
-if [ "$nodetype" = "m" ]
-then
+if [ $nodetype = "m" ]; then
     echo "ok..."
-elif [ "$nodetype" = "w" ]
-then
+elif [ $nodetype = "w" ]; then
     # Get Kubernetes Master Node Info
     read -p "What is the IP address of the master node?> " masip
     read -p "What is the api token provided by the master node?> " mastoken
@@ -50,11 +48,9 @@ else
     exit
 fi
 
-if [ "$rebnow" = "y" ]
-then
+if [ $rebnow = "y" ]; then
     echo "ok..."
-elif [ "$rebnow" = "n" ]
-then
+elif [ $rebnow = "n" ]; then
     echo "ok..."
 else
     clear
@@ -92,8 +88,7 @@ chmod -R 777 .
 #sudo ufw allow ${kubernetes-ports-and-port-ranges}/udp
 
 ####################     Pass NodeType Args to More Scripts     ####################
-if [ "$nodetype" = "m" ]
-then
+if [ $nodetype = "m" ]; then
     #echo "Setting up matrix notifications..."
     #bash notifications.sh
     echo -e "\n\n\nSetting up kubernetes...\n\n\n"
@@ -101,8 +96,7 @@ then
     echo -e "\n\n\nSetting up kubeflow...\n\n\n"
     bash kuf-init.sh
 
-elif [ "$nodetype" = "w" ]
-then
+elif [ $nodetype = "w" ]; then
 
     echo -e "\n\n\nSetting up kubernetes...\n\n\n"
     bash kub-init.sh w $masip $mastoken
@@ -111,8 +105,7 @@ fi
 echo -e "\n\n\nSetting up smb...\n\n\n"
 bash smb-init.sh $smbuser $smbsharename $smbsharedir
 
-if [ "$rebnow" = "n" ]
-then
+if [ $rebnow = "n" ]; then
     exit
 else
     sudo reboot now
