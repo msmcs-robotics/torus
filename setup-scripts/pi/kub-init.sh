@@ -1,11 +1,49 @@
 #!/bin/bash
+
 mkdir ${HOME}/torus-setup-logs
 logfile=${HOME}/torus-setup-logs/k3s-init.log
+
+####################     ARGUMENTS     ####################
 nodetype=$1
 master_ip=$2
 master_token=$3
 save_token="/home/$USER/k3s-server-token.txt"
+####################     ERROR CORRECTION     ####################
+menu=$(cat <<EOF
+Usage:
+    sudo setup-1.sh [nodetype] [nodeid]
+GENERAL
 
+    node type       'm' - master
+                    'w' - worker
+
+MASTER
+    No further arguments needed
+
+WORKER
+
+    master node ip     'ip' - the ip address of the master node
+
+    master token       'token' - the token of the master node's 
+                                     kubernetes API
+EOF
+)
+err1="No nodetype was given"
+err2="No master IP was given"
+err3="No master token was given"
+if [ -z "$nodetype" ]; then
+    clear
+    echo "!!! ${err1} !!!"
+    echo -e
+    exit
+elif [ $nodetype = "w" ]; then
+    if [ -z "$master_ip" ]; then
+        clear
+        echo "!!! ${err2} !!!"
+        echo -e
+        exit
+fi
+####################     SETUP     ####################
 if [ $nodetype = "m" ]; then
     echo "ok..."
     curl -sfL https://get.k3s.io | sh -s - --write-kubeconfig-mode 644 2>&1 | tee $logfile
