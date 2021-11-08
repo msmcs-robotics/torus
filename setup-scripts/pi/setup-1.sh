@@ -46,7 +46,7 @@ sudo apt upgrade -y  2>&1 | tee $logfile
 echo -e "\n\n------------------------------\n\n" 2>&1 | tee $logfile
 echo "Installing packages..."
 sudo apt install -fy nmap git docker iperf3 speedtest-cli python3 python3-pip \
-        python3-dev gcc g++ build-essential 2>&1 | tee $logfile
+        python3-dev gcc g++ build-essential snap snapd 2>&1 | tee $logfile
 echo -e "\n\n------------------------------\n\n" 2>&1 | tee $logfile
 chmod -R 777 .
 
