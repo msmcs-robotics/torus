@@ -1,6 +1,7 @@
 #!/bin/bash
 mkdir ${HOME}/torus-setup-logs
 logfile=${HOME}/torus-setup-logs/newhost.log
+####################     VARS     ####################
 nodetype=$1
 nodeid=$2
 menu=$(cat <<EOF
@@ -33,7 +34,6 @@ if [ $1 = "w" ]; then
 elif [ $1 = "m" ]; then
     echo "master" > /etc/hostname
 fi
-
 ####################     NETWORKING     ####################
 ip a s | grep eth0 2>&1 | tee $logfile
 echo -e "\n\n------------------------------\n\n" 2>&1 | tee $logfile

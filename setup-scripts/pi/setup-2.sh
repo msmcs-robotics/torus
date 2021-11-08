@@ -3,7 +3,7 @@ mkdir ${HOME}/torus-setup-logs
 logfile=${HOME}/torus-setup-logs/main.log
 touch $logfile
 clear
-####################     INFORMATION     ####################
+####################     VARS     ####################
 ip a s | grep eth0 2>&1 | tee $logfile
 nodetype=$1
 rebnow=$2

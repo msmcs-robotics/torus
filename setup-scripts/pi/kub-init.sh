@@ -1,9 +1,7 @@
 #!/bin/bash
-
 mkdir ${HOME}/torus-setup-logs
 logfile=${HOME}/torus-setup-logs/k3s-init.log
-
-####################     ARGUMENTS     ####################
+####################     VARS     ####################
 nodetype=$1
 master_ip=$2
 master_token=$3
