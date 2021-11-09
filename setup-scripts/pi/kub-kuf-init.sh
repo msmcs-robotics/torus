@@ -53,10 +53,10 @@ fi
 ####################     SETUP     ####################
 before_reboot(){
     sudo iptables -F 
-    sudo update-alternatives --set iptables /usr/sbin/iptables-legacy 2>&1 >> $logfile
-    sudo update-alternatives --set ip6tables /usr/sbin/ip6tables-legacy 2>&1 >> $logfile
+    sudo update-alternatives --set iptables /usr/sbin/iptables-legacy 2>&1 | tee -a $logfile
+    sudo update-alternatives --set ip6tables /usr/sbin/ip6tables-legacy 2>&1 | tee -a $logfile
     sudo sed -i 's/rootwait/& group_enable=cpuset cgroup_enable=memory cgroup_memory=1/' /boot/cmdline.txt 
-    echo -e "\n\n------------------------------\n\n" 2>&1 >> $logfile
+    echo -e "\n\n------------------------------\n\n" 2>&1 | tee -a $logfile
     sudo reboot now
 }
 
@@ -66,26 +66,26 @@ after_reboot(){
 
         ##########      K3S     ##########
         
-        sudo curl -sfL https://get.k3s.io | K3S_KUBECONFIG_MODE="644" sh -s - 2>&1 >> $logfile
-        echo -e "\n\n------------------------------\n\n" 2>&1 >> $logfile
+        sudo curl -sfL https://get.k3s.io | K3S_KUBECONFIG_MODE="644" sh -s - 2>&1 | tee -a $logfile
+        echo -e "\n\n------------------------------\n\n" 2>&1 | tee -a $logfile
         echo -e "\n\n\n Use this token to join the cluster... \n\n"
-        sudo cat /var/lib/rancher/k3s/server/node-token 2>&1 >> $tokenfile >> $logfile
-        echo -e "\n\n------------------------------\n\n" 2>&1 >> $logfile
+        sudo cat /var/lib/rancher/k3s/server/node-token 2>&1 | tee -a $tokenfile | tee -a $logfile
+        echo -e "\n\n------------------------------\n\n" 2>&1 | tee -a $logfile
 
         ##########      KubeFlow    ##########
         export PIPELINE_VERSION=1.7.1
-        kubectl apply -k "github.com/kubeflow/pipelines/manifests/kustomize/cluster-scoped-resources?ref=$PIPELINE_VERSION" 2>&1 >> $logfile
-        echo -e "\n\n------------------------------\n\n" 2>&1 >> $logfile
-        kubectl wait --for condition=established --timeout=60s crd/applications.app.k8s.io 2>&1 >> $logfile
-        echo -e "\n\n------------------------------\n\n" 2>&1 >> $logfile
-        kubectl apply -k "github.com/kubeflow/pipelines/manifests/kustomize/env/platform-agnostic-pns?ref=$PIPELINE_VERSION" 2>&1 >> $logfile
-        echo -e "\n\n------------------------------\n\n" 2>&1 >> $logfile
+        kubectl apply -k "github.com/kubeflow/pipelines/manifests/kustomize/cluster-scoped-resources?ref=$PIPELINE_VERSION" 2>&1 | tee -a $logfile
+        echo -e "\n\n------------------------------\n\n" 2>&1 | tee -a $logfile
+        kubectl wait --for condition=established --timeout=60s crd/applications.app.k8s.io 2>&1 | tee -a $logfile
+        echo -e "\n\n------------------------------\n\n" 2>&1 | tee -a $logfile
+        kubectl apply -k "github.com/kubeflow/pipelines/manifests/kustomize/env/platform-agnostic-pns?ref=$PIPELINE_VERSION" 2>&1 | tee -a $logfile
+        echo -e "\n\n------------------------------\n\n" 2>&1 | tee -a $logfile
         #kubectl port-forward -n kubeflow svc/ml-pipeline-ui 8080:80
 
     elif [ $nodetype = "w" ]; then
         echo "ok..."
-        sudo curl -sfL https://get.k3s.io | K3S_TOKEN="$master_token" K3S_URL="https://$master_ip:6443" K3S_NODE_NAME="$(hostname)" sh - 2>&1 >> $logfile
-        echo -e "\n\n------------------------------\n\n" 2>&1 >> $logfile
+        sudo curl -sfL https://get.k3s.io | K3S_TOKEN="$master_token" K3S_URL="https://$master_ip:6443" K3S_NODE_NAME="$(hostname)" sh - 2>&1 | tee -a $logfile
+        echo -e "\n\n------------------------------\n\n" 2>&1 | tee -a $logfile
     fi
 }
 
