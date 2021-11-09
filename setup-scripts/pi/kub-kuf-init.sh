@@ -1,9 +1,8 @@
 #!/bin/bash
 goal="setup"
 mkdir ${HOME}/torus-${goal}-logs
-logfile=${HOME}/torus-${goal}-logs/k8s-init.log
-k8stokens=${HOME}/torus-${goal}-logs/k8s-tokens.log
-kb_web=${HOME}/torus-${goal}-logs/kb_web_access.log
+logfile=${HOME}/torus-${goal}-logs/k3s-init.log
+tokenfile=${HOME}/torus-${goal}-logs/master-token.log
 ####################     VARS     ####################
 nodetype=$1
 master_ip=$2
@@ -53,43 +52,40 @@ elif [ $nodetype = "w" ]; then
 fi
 ####################     SETUP     ####################
 before_reboot(){
-    sudo snap install core 2>&1 >> $logfile
-    sudo snap install microk8s --classic --channel=1.21 2>&1 >> $logfile
+    sudo iptables -F 
+    sudo update-alternatives --set iptables /usr/sbin/iptables-legacy 2>&1 >> $logfile
+    sudo update-alternatives --set ip6tables /usr/sbin/ip6tables-legacy 2>&1 >> $logfile
+    sudo sed -i 's/rootwait/& group_enable=cpuset cgroup_enable=memory cgroup_memory=1/' /boot/cmdline.txt 
     echo -e "\n\n------------------------------\n\n" 2>&1 >> $logfile
-    sudo usermod -a -G microk8s $USER
-    sudo chown -f -R $USER ~/.kube
+    sudo reboot now
 }
 
 after_reboot(){
     if [ $nodetype = "m" ]; then
         echo "master..."
-        echo -e "\n\n\n Follow these instructions to join a node to the cluster... \n\n"
-        i=0
-        microk8s enable dns dashboard storage
-        microk8s enable dns dashboard storage 2>&1 >> $logfile
+
+        ##########      K3S     ##########
+        
+        sudo curl -sfL https://get.k3s.io | K3S_KUBECONFIG_MODE="644" sh -s - 2>&1 >> $logfile
         echo -e "\n\n------------------------------\n\n" 2>&1 >> $logfile
-        microk8s enable kubeflow 2>&1 >> $logfile
-        echo -e "\n\n------------------------------\n\n" 2>&1 >> $logfile
-        for i in {1..$numnodes}; do
-            microk8s add-node 2>&1 >> $k8stokens
-            cat $k8stokens >> $logfile
-            echo -e "\n-----------------\n" >> $logfile
-        done
-        echo -e "\n\n Intructions and tokens saved at $k8stokens \n\n"
-        echo -e "\n\n Microk8s installed...\n Tokens logged...\n check out 'microk8s kubectl' for more... \n\n"
-        echo -e "\n\n------------------------------\n\n" 2>&1 >> $logfile
-        echo -e "\n\n\n Follow these instructions to access kubeflow dashboard... \n\n"
-        microk8s enable kubeflow 2>&1 >> $kb_web
-        cat $kb_web >> $logfile
-        echo -e "\n\n Intructions saved at $kb_web \n\n"
+        echo -e "\n\n\n Use this token to join the cluster... \n\n"
+        sudo cat /var/lib/rancher/k3s/server/node-token 2>&1 >> $tokenfile >> $logfile
         echo -e "\n\n------------------------------\n\n" 2>&1 >> $logfile
 
+        ##########      KubeFlow    ##########
+        export PIPELINE_VERSION=1.7.1
+        kubectl apply -k "github.com/kubeflow/pipelines/manifests/kustomize/cluster-scoped-resources?ref=$PIPELINE_VERSION" 2>&1 >> $logfile
+        echo -e "\n\n------------------------------\n\n" 2>&1 >> $logfile
+        kubectl wait --for condition=established --timeout=60s crd/applications.app.k8s.io 2>&1 >> $logfile
+        echo -e "\n\n------------------------------\n\n" 2>&1 >> $logfile
+        kubectl apply -k "github.com/kubeflow/pipelines/manifests/kustomize/env/platform-agnostic-pns?ref=$PIPELINE_VERSION" 2>&1 >> $logfile
+        echo -e "\n\n------------------------------\n\n" 2>&1 >> $logfile
+        #kubectl port-forward -n kubeflow svc/ml-pipeline-ui 8080:80
+
     elif [ $nodetype = "w" ]; then
-        # Get Kubernetes Master Node Info
-        echo "Run the following on the Master Server: "
-        echo "''"
-        microk8s join ${master_ip}:25000/${master_token}
         echo "ok..."
+        sudo curl -sfL https://get.k3s.io | K3S_TOKEN="$master_token" K3S_URL="https://$master_ip:6443" K3S_NODE_NAME="$(hostname)" sh - 2>&1 >> $logfile
+        echo -e "\n\n------------------------------\n\n" 2>&1 >> $logfile
     fi
 }
 

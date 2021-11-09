@@ -46,8 +46,10 @@ sudo apt update -y 2>&1 >> $logfile
 sudo apt upgrade -y  2>&1 >> $logfile
 echo -e "\n\n------------------------------\n\n" 2>&1 >> $logfile
 echo "Installing packages..."
-sudo apt install -fy nmap git docker iperf3 speedtest-cli python3 python3-pip \
+sudo apt install -fy nmap git iperf3 speedtest-cli python3 python3-pip \
         python3-dev gcc g++ build-essential snap snapd 2>&1 >> $logfile
+sudo curl -fsSL https://get.docker.com -o get-docker.sh && sudo sh get-docker.sh 2>&1 >> $logfile
+sudo usermod -aG docker $USER
 echo -e "\n\n------------------------------\n\n" 2>&1 >> $logfile
 chmod -R 777 .
 
