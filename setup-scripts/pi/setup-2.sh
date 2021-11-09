@@ -4,7 +4,7 @@ logfile=${HOME}/torus-setup-logs/main.log
 touch $logfile
 clear
 ####################     VARS     ####################
-ip a s | grep eth0 2>&1 | tee $logfile
+ip a s | grep eth0 2>&1 >> $logfile
 nodetype=$1
 rebnow=$2
 
@@ -44,6 +44,7 @@ err3="smb variable empty"
 
 if [ $nodetype = "m" ]; then
     echo "master..."
+    read -p "How many worker nodes are in the cluster?> " numnodes
 elif [ $nodetype = "w" ]; then
     # Get Kubernetes Master Node Info
     echo "worker..."
@@ -81,7 +82,7 @@ echo "Logging output to: $logfile"
 
 ####################     FIREWALL SETUP     ####################
 #echo "Setting up firewall..."
-#sudo apt install ufw 2>&1 | tee $logfile
+#sudo apt install ufw 2>&1 >> $logfile
 #kubernetes-ports-and-port-ranges="2500"
 #sudo ufw allow 21,22,222,80,139,443,445,9418/tcp
 #sudo ufw allow 21,22,222,80,139,443,445,9418/udp
@@ -93,14 +94,13 @@ if [ $nodetype = "m" ]; then
     #echo "Setting up matrix notifications..."
     #bash notifications.sh
     echo -e "\n\n\nSetting up kubernetes...\n\n\n"
-    bash kub-init.sh m
+    bash kub-kuf-init.sh m x x numnodes
     echo -e "\n\n\nSetting up kubeflow...\n\n\n"
-    bash kuf-init.sh
 
 elif [ $nodetype = "w" ]; then
 
     echo -e "\n\n\nSetting up kubernetes...\n\n\n"
-    bash kub-init.sh w $masip $mastoken
+    bash kub-kuf-init.sh w $masip $mastoken
 fi
 
 echo -e "\n\n\nSetting up smb...\n\n\n"
