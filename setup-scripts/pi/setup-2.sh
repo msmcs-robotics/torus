@@ -4,7 +4,7 @@ logfile=${HOME}/torus-setup-logs/main.log
 touch $logfile
 clear
 ####################     VARS     ####################
-ip a s | grep eth0 2>&1 >> $logfile
+ip a s | grep eth0 2>&1 | tee -a $logfile
 nodetype=$1
 rebnow=$2
 
@@ -82,7 +82,7 @@ echo "Logging output to: $logfile"
 
 ####################     FIREWALL SETUP     ####################
 #echo "Setting up firewall..."
-#sudo apt install ufw 2>&1 >> $logfile
+#sudo apt install ufw 2>&1 | tee -a $logfile
 #kubernetes-ports-and-port-ranges="2500"
 #sudo ufw allow 21,22,222,80,139,443,445,9418/tcp
 #sudo ufw allow 21,22,222,80,139,443,445,9418/udp
