@@ -33,20 +33,17 @@ err2="No master IP was given"
 err3="No master token was given"
 if [ -z "$nodetype" ]; then
     clear
-    echo "!!! ${err1} !!!"
-    echo -e
+    echo "!!! ${err1} !!!\n"
     exit
 elif [ $nodetype = "w" ]; then
     if [ -z "$master_ip" ]; then
         clear
-        echo "!!! ${err2} !!!"
-        echo -e
+        echo "!!! ${err2} !!!\n"
         exit
     fi
-     if [ -z "$master_token" ]; then
+    if [ -z "$master_token" ]; then
         clear
-        echo "!!! ${err3} !!!"
-        echo -e
+        echo "!!! ${err3} !!!\n"
         exit
     fi
 fi

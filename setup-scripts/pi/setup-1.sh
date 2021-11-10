@@ -4,6 +4,8 @@ logfile=${HOME}/torus-setup-logs/newhost.log
 ####################     VARS     ####################
 nodetype=$1
 nodeid=$2
+dbdrive=$3
+####################     ERROR CORRECTION     ####################
 menu=$(cat <<EOF
 Usage:
     sudo setup-1.sh [nodetype] [nodeid]
@@ -15,23 +17,48 @@ Usage:
 
     node id         'id' - only needed for a worker node, and
                            optional, but extremely helpful
+
+ OPTIONAL
+
+    drive           '/dev/{drive}' - option to mount an external drive
+                                     for extended storage.
+                        This drive, if selected, is where the following will be stored:
+                        !!! Service Root Directories: maria-db, mongo-db, docker
+                         !! Persistant Volumes: docker-volumes 
+                          ! Important Files: k3s deployments, k3s services 
+                            Misc Files: scripting logs  
 EOF
 )
+err1="node type not selected..."
+err2="node id empty..."
+err3="no proper drive from /dev selected..."
 
-if [ $nodetype = "m" ]; then
-    echo "master..."
-elif [ $nodetype = "w" ]; then
-    echo "worker..."
-else
+if [ -z "$nodetype" ]; then
     clear
-    echo -e "$menu"
+    echo "!!! ${err1} !!!\n"
     exit
+elif [ $nodetype = "w" ]; then
+    if [ -z "$nodeid" ]; then
+        clear
+        echo "!!! ${err2} !!!\n"
+        exit
+    fi
 fi
 
+if [ -z "${dbdrive}" ]; then
+    echo ${dbdrive} | grep --quiet "/dev/"
+    if [ $? = 1 ]; then
+        clear
+        echo "!!! ${err3} !!!\n"
+        exit
+    fi
+fi
 
 if [ $1 = "w" ]; then
+    echo "master..."
     echo "worker${nodeid}" > /etc/hostname
 elif [ $1 = "m" ]; then
+    echo "worker..."
     echo "master" > /etc/hostname
     echo "127.0.0.1         $(hostname)" | tee -a /etc/hosts
 fi
