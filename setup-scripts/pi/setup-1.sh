@@ -5,6 +5,7 @@ logfile=${HOME}/torus-setup-logs/newhost.log
 nodetype=$1
 nodeid=$2
 dbdrive=$3
+drive_mount_point="/dbdrive"
 ####################     ERROR CORRECTION     ####################
 menu=$(cat <<EOF
 Usage:
@@ -24,7 +25,7 @@ Usage:
                                      for extended storage.
                         This drive, if selected, is where the following will be stored:
                         !!! Service Root Directories: maria-db, mongo-db, docker
-                         !! Persistant Volumes: docker-volumes 
+                         !! Persistant Volumes: samba, docker-volumes 
                           ! Important Files: k3s deployments, k3s services 
                             Misc Files: scripting logs  
 EOF
@@ -54,10 +55,10 @@ if [ -z "${dbdrive}" ]; then
     fi
 fi
 
-if [ $1 = "w" ]; then
+if [ $nodetype = "w" ]; then
     echo "master..."
     echo "worker${nodeid}" > /etc/hostname
-elif [ $1 = "m" ]; then
+elif [ $nodetype = "m" ]; then
     echo "worker..."
     echo "master" > /etc/hostname
     echo "127.0.0.1         $(hostname)" | tee -a /etc/hosts
@@ -66,7 +67,6 @@ fi
 ip a s | grep eth0 2>&1 | tee -a $logfile
 echo -e "\n\n------------------------------\n\n" 2>&1 | tee -a $logfile
 echo -e "nameserver 1.1.1.1\nnameserver 1.0.0.1" > /etc/resolv.conf
-
 ####################     BASE PACKAGES     ####################
 echo "Getting things up to date (update & upgrade)..."
 sudo apt update -y 2>&1 | tee -a $logfile
@@ -74,7 +74,7 @@ sudo apt upgrade -y  2>&1 | tee -a $logfile
 echo -e "\n\n------------------------------\n\n" 2>&1 | tee -a $logfile
 echo "Installing packages..."
 sudo apt install -fy nmap git iperf3 speedtest-cli python3 python3-pip \
-        python3-dev gcc g++ build-essential snap snapd 2>&1 | tee -a $logfile
+        python3-dev gcc g++ build-essential p7zip-full 2>&1 | tee -a $logfile
 sudo curl -fsSL https://get.docker.com -o get-docker.sh && sudo sh get-docker.sh 2>&1 | tee -a $logfile
 sudo usermod -aG docker $USER
 echo -e "\n\n------------------------------\n\n" 2>&1 | tee -a $logfile
@@ -82,3 +82,26 @@ chmod -R 777 .
 
 echo "rebooting..."
 sudo reboot now
+####################     DBDrive     ####################
+if [ -n "$dbdrive" ]; then
+    # Formatting drive
+    sudo umount ${dbdrive}*
+    sudo wipefs -a ${dbdrive}
+    sudo parted -s ${dbdrive} mklabel gpt
+    sudo parted -s ${dbdrive} mkpart primary 0% 100%
+    sudo mkfs.ext4 ${dbdrive}1
+    
+    # FS organization
+    sudo mkdir ${drive_mount_point}
+    sudo mount ${dbdrive}1 ${drive_mount_point}
+    sudo chmod -R 777 ${drive_mount_point}
+    mkdir ${drive_mount_point}/docker-root
+    mkdir ${drive_mount_point}/docker-volumes
+    # will rsync docker volumes to smb shares
+    mkdir ${drive_mount_point}/smb-shares
+    
+    if [ $nodetype = "m" ]; then
+    # store kb .yaml files for services and deployments
+    mkdir ${drive_mount_point}/kb-tasks
+    fi
+fi
