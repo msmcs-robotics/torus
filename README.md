@@ -17,5 +17,5 @@
 
 Find the Wiki [here](https://github.com/msmcs-robotics/torus/wiki) (in progress)
 
-### Setting up SSH
+### Setting up SSH Keys for Multiple Servers
 ![Alt Text](https://github.com/msmcs-robotics/torus/blob/main/docs/gifs/mass-ssh-kegen.gif)
